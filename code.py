@@ -32,9 +32,6 @@ touch_sensors = [touch_TX, touch_A2]
 HUE_URL = 'http://' + secrets["ip_address"] + \
     '/api/' + secrets["api_id"] + '/groups/12/action'
 
-new_color = ''
-is_touched = False
-
 print("Connecting to %s" % secrets["ssid"])
 wifi.radio.connect(secrets["ssid"], secrets["password"])
 print("Connected to %s!" % secrets["ssid"])
@@ -47,8 +44,13 @@ np[0] = (0, 0, 0)
 pool = socketpool.SocketPool(wifi.radio)
 requests = adafruit_requests.Session(pool, ssl.create_default_context())
 
+is_touched = False
+data = ''
+current_state = ''
+new_state = ''
+
 while True:
-    if touch_TX or touch_A2:
+    if touch_TX.value or touch_A2.value:
         is_touched = True
         time.sleep(1)
 
@@ -59,14 +61,18 @@ while True:
             time.sleep(2)
             np[0] = (0, 0, 0)
             data = '{{"scene":"{}"}}'.format(secrets["on_scene"])
+            new_state = "on"
         if touch_TX.value:  # off
             print("TX touched!")
             np[0] = (90, 0, 127)
             time.sleep(2)
             np[0] = (0, 0, 0)
             data = '{"on":false}'
+            new_state = "off"
 
-            print(new_color + '!!!!')
+        if current_state != new_state:
+            is_touched = False
+            current_state = new_state
             print("PUTing data to {0}".format(HUE_URL))
             response = requests.put(HUE_URL, data=data)
             print("-" * 40)
