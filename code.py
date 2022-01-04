@@ -55,7 +55,6 @@ new_state = ''
 while True:
 
     if touch_TX.value or touch_A2.value:
-        print(touch_A2.raw_value, touch_TX.raw_value)
         is_touched = True
         time.sleep(1)
 
