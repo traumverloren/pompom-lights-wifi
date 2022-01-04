@@ -29,6 +29,9 @@ touch_TX = touchio.TouchIn(board.TX)  # off
 
 touch_sensors = [touch_TX, touch_A2]
 
+for sensor in touch_sensors:
+    sensor.threshold = 30000
+
 HUE_URL = 'http://' + secrets["ip_address"] + \
     '/api/' + secrets["api_id"] + '/groups/12/action'
 
@@ -50,7 +53,9 @@ current_state = ''
 new_state = ''
 
 while True:
+
     if touch_TX.value or touch_A2.value:
+        print(touch_A2.raw_value, touch_TX.raw_value)
         is_touched = True
         time.sleep(1)
 
