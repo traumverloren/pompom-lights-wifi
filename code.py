@@ -7,7 +7,7 @@ import board
 import neopixel
 import digitalio
 import touchio
-import ipaddress
+# import ipaddress
 
 OFF = (0, 0, 0)
 RED = (255, 0, 0)
@@ -49,7 +49,7 @@ print("My IP address is", wifi.radio.ipv4_address)
 
 np[0] = GREEN
 time.sleep(2)
-np[0] = (0, 0, 0)
+np[0] = OFF
 
 pool = socketpool.SocketPool(wifi.radio)
 requests = adafruit_requests.Session(pool, ssl.create_default_context())
