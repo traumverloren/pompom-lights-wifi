@@ -37,7 +37,7 @@ touch_TX = touchio.TouchIn(board.TX)  # off
 touch_sensors = [touch_TX, touch_A2]
 
 for sensor in touch_sensors:
-    sensor.threshold = 26000
+    sensor.threshold = 30000
 
 HUE_URL = 'http://' + secrets["ip_address"] + \
     '/api/' + secrets["api_id"] + '/groups/12/action'
