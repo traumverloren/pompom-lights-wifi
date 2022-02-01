@@ -37,7 +37,7 @@ touch_TX = touchio.TouchIn(board.TX)  # off
 touch_sensors = [touch_TX, touch_A2]
 
 for sensor in touch_sensors:
-    sensor.threshold = 30000
+    sensor.threshold = 27000
 
 HUE_URL = 'http://' + secrets["ip_address"] + \
     '/api/' + secrets["api_id"] + '/groups/12/action'
@@ -75,16 +75,15 @@ while True:
             data = '{"on":false}'
             new_state = "off"
 
-        if current_state != new_state:
-            np[0] = WHITE if new_state == "on" else PURPLE
-            print(data)
-            print("PUTing data to {0}".format(HUE_URL))
-            response = requests.put(HUE_URL, data=data)
-            response.close()
-            is_touched = False
-            current_state = new_state
-            time.sleep(2)
-            np[0] = OFF
+        np[0] = WHITE if new_state == "on" else PURPLE
+        print(data)
+        print("PUTing data to {0}".format(HUE_URL))
+        response = requests.put(HUE_URL, data=data)
+        response.close()
+        is_touched = False
+        current_state = new_state
+        time.sleep(2)
+        np[0] = OFF
 
     # else:
     #     test_ping = wifi.radio.ping(
